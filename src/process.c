@@ -2,8 +2,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
+#include <MLV/MLV_all.h>
 
-void process_initialisationPlateau(Plateau* p){
+void process_init(Plateau* p, Carre* c){
+    c->col = 0;
+    c->lig = 0;
     int i, j;
     for(i = 0; i < NB_LIG; i++) {
         for(j = 0; j < NB_COL; j++) {
@@ -13,14 +16,14 @@ void process_initialisationPlateau(Plateau* p){
     }
 }
 
-bool process_est_valide(int col, int lig, Carre black) {
+int process_est_valide(int col, int lig, Carre black) {
     if(col >= NB_COL || col < 0 || lig >= NB_LIG || lig < 0) {
-        return false;
+        return 0;
     }
     if(abs(black.col - col) + abs(black.lig - lig) == 1 ) {
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 void process_shufflePlateau(Plateau* p) {
@@ -33,5 +36,17 @@ void process_shufflePlateau(Plateau* p) {
         p->bloc[i]->col = p->bloc[j]->col;
         p->bloc[j]->lig = temp.lig;
         p->bloc[j]->col = temp.col;
+    }
+}
+
+void process_move_particle(Plateau* p, Carre* black, MLV_Keyboard_button key) {
+    Carre tmp;
+    switch(key) {
+        case MLV_KEYBOARD_UP :
+            tmp = p->bloc[black->lig][black->col];
+            p->bloc[black->lig][black->col] = p->bloc[black->lig][black->col-1];
+            p->bloc[black->lig][black->col-1] = tmp;
+            black->lig -= 1;
+            return;    
     }
 }

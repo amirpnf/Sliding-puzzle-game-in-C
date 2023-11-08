@@ -1,7 +1,7 @@
 #ifndef __PROCESS__
 #define __PROCESS__
 
-#include <stdbool.h>
+#include <MLV/MLV_all.h>
 
 #define NB_LIG 4
 #define NB_COL 4
@@ -20,10 +20,12 @@ typedef struct {
  * 
  * @param p 
  */
-void process_initialisationPlateau(Plateau* p);
+void process_init(Plateau* p, Carre* c);
 
-bool process_est_valide(int x, int y, Carre black);
+int process_est_valide(int x, int y, Carre black);
 
 void process_shufflePlateau(Plateau* p);
+
+void process_move_particle(Plateau* p, Carre* black, MLV_Keyboard_button key);
 
 #endif

@@ -2,22 +2,24 @@
 #include <stdlib.h>
 #include <time.h>
 #include "process.h"
+#include "graphic.h"
+#include <MLV/MLV_all.h>
 
 int main(int argc, char* argv[]) {
     srand(time(NULL));
     Plateau p;
-    process_initialisationPlateau(&p);
-    for(int i = 0; i < NB_COL; ++i) {
-        for(int j = 0; j < NB_LIG; ++j) {
-            //printf("%d -- %d | ", p.bloc[i][j].lig, p.bloc[i][j].col);
-        }
-    }
+    Carre c;
+    MLV_Keyboard_button key;
+    process_init(&p, &c);
+    MLV_create_window("Taquin", "taquin", 512, 512);
+    MLV_Image* image = MLV_load_image("image.jpg");
+    while(1){
+        graphic_show_photo(image, p, c);
+        MLV_update_window();
+        MLV_wait_keyboard(&key, NULL, NULL);
+        process_move_particle(&p, &c, key);
     
-    process_shufflePlateau(&p);
-    
-    for(int i = 0; i < NB_COL; ++i) {
-        for(int j = 0; j < NB_LIG; ++j) {
-            printf("%d -- %d | ", p.bloc[i][j].lig, p.bloc[i][j].col);
-        }
     }
+    MLV_wait_seconds(15000);
+    MLV_free_window();
 }
