@@ -22,7 +22,7 @@ typedef struct {
  */
 void process_init(Plateau* p, Carre* c);
 
-int process_est_valide(int x, int y, Carre black);
+int process_est_valide(int lig, int col);
 
 void process_shufflePlateau(Plateau* p);
 

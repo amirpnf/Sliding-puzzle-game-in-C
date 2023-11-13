@@ -16,37 +16,55 @@ void process_init(Plateau* p, Carre* c){
     }
 }
 
-int process_est_valide(int col, int lig, Carre black) {
-    if(col >= NB_COL || col < 0 || lig >= NB_LIG || lig < 0) {
-        return 0;
-    }
-    if(abs(black.col - col) + abs(black.lig - lig) == 1 ) {
-        return 1;
-    }
-    return 0;
-}
-
-void process_shufflePlateau(Plateau* p) {
-    int j;
-    Carre temp;
-    for(int i = NB_COL - 1; i > 0; i--) {
-        j = rand() % (i+1);
-        temp = *p->bloc[i];
-        p->bloc[i]->lig = p->bloc[j]->lig;
-        p->bloc[i]->col = p->bloc[j]->col;
-        p->bloc[j]->lig = temp.lig;
-        p->bloc[j]->col = temp.col;
-    }
-}
-
 void process_move_particle(Plateau* p, Carre* black, MLV_Keyboard_button key) {
-    Carre tmp;
+    //Carre tmp = p->bloc[black->lig][black->col];
+    int tmp_x, tmp_y;
     switch(key) {
         case MLV_KEYBOARD_UP :
-            tmp = p->bloc[black->lig][black->col];
-            p->bloc[black->lig][black->col] = p->bloc[black->lig][black->col-1];
-            p->bloc[black->lig][black->col-1] = tmp;
-            black->lig -= 1;
-            return;    
+            if(black->lig > 0) {
+                //tmp_x = quelque chose 1
+                //tmp_y = quelque chose 1
+                //quelque chose 1 = quelque chose 2
+                //quelque chose 1 = quelque chose 2
+                //quelque chose 2 = tmp_x
+                //quelque chose 2 = tmp_x
+
+                p->bloc[black->lig][black->col].lig = p->bloc[black->lig][black->col-1].lig;
+                p->bloc[black->lig][black->col].col = p->bloc[black->lig][black->col-1].col;
+                p->bloc[black->lig][black->col-1].lig = tmp.lig;
+                p->bloc[black->lig][black->col-1].col = tmp.col;
+                black->col--;
+                return;
+            }
+        case MLV_KEYBOARD_DOWN :
+            if(black->lig < NB_LIG - 1) {
+                p->bloc[black->lig][black->col].lig = p->bloc[black->lig][black->col+1].lig;
+                p->bloc[black->lig][black->col].col = p->bloc[black->lig][black->col+1].col;
+                p->bloc[black->lig][black->col+1].lig = tmp.lig;
+                p->bloc[black->lig][black->col+1].col = tmp.col;
+                black->col += 1;
+                return;
+            }    
+        case MLV_KEYBOARD_LEFT :
+            if(black->col > 0) {
+                p->bloc[black->lig][black->col].lig = p->bloc[black->lig-1][black->col].lig;
+                p->bloc[black->lig][black->col].col = p->bloc[black->lig-1][black->col].col;
+                p->bloc[black->lig-1][black->col].lig = tmp.lig;
+                p->bloc[black->lig-1][black->col].col = tmp.col;
+                black->lig -= 1;
+                return;
+            }    
+        case MLV_KEYBOARD_RIGHT :
+            if(black->col < NB_COL - 1) {
+                p->bloc[black->lig][black->col].lig = p->bloc[black->lig+1][black->col].lig;
+                fprintf(stderr, "%d, %d \n", black->col, black->lig);
+                p->bloc[black->lig][black->col].col = p->bloc[black->lig+1][black->col].col;
+                p->bloc[black->lig+1][black->col].lig = tmp.lig;
+                p->bloc[black->lig+1][black->col].col = tmp.col;
+                black->lig += 1;
+                return;       
+            }    
+        default:
+            return;      
     }
 }

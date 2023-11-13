@@ -11,8 +11,8 @@ int main(int argc, char* argv[]) {
     Carre c;
     MLV_Keyboard_button key;
     process_init(&p, &c);
-    MLV_create_window("Taquin", "taquin", 512, 512);
-    MLV_Image* image = MLV_load_image("image.jpg");
+    MLV_create_window("Taquin", "taquin", 513, 513);
+    MLV_Image* image = MLV_load_image("image.png");
     while(1){
         graphic_show_photo(image, p, c);
         MLV_update_window();
