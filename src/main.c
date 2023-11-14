@@ -6,20 +6,22 @@
 #include <MLV/MLV_all.h>
 
 int main(int argc, char* argv[]) {
-    srand(time(NULL));
     Plateau p;
-    Carre c;
+    Carre black;
     MLV_Keyboard_button key;
-    process_init(&p, &c);
-    MLV_create_window("Taquin", "taquin", 513, 513);
+    black.col = 1;
+    black.lig = 1;
+    init(&p);
+    MLV_create_window("", "", 512, 512);
     MLV_Image* image = MLV_load_image("image.png");
-    while(1){
-        graphic_show_photo(image, p, c);
-        MLV_update_window();
+    show_photo(image, p, black);
+    while(1) {
         MLV_wait_keyboard(&key, NULL, NULL);
-        process_move_particle(&p, &c, key);
-    
+        play(&p, key, &black);
+        fprintf(stderr, "%d --%d \n", p.bloc[black.lig][black.col].col, p.bloc[black.lig][black.col].lig);
+        fprintf(stderr, "%d -- %d \n", black.col, black.lig);
+        show_photo(image, p, black);
     }
-    MLV_wait_seconds(15000);
+    MLV_wait_seconds(20);
     MLV_free_window();
 }

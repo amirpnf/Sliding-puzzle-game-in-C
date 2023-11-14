@@ -2,6 +2,7 @@
 #define __PROCESS__
 
 #include <MLV/MLV_all.h>
+#include <stdbool.h>
 
 #define NB_LIG 4
 #define NB_COL 4
@@ -15,17 +16,13 @@ typedef struct {
     Carre bloc[NB_COL][NB_LIG];
 } Plateau;
 
-/**
- * @brief initializes the Game terrain
- * 
- * @param p 
- */
-void process_init(Plateau* p, Carre* c);
 
-int process_est_valide(int lig, int col);
+void init(Plateau* p);
 
-void process_shufflePlateau(Plateau* p);
+void swap(Carre* a, Carre* b);
 
-void process_move_particle(Plateau* p, Carre* black, MLV_Keyboard_button key);
+void play(Plateau* p, MLV_Keyboard_button key, Carre* black);
+
+bool est_valide(Carre cible, MLV_Keyboard_button key);
 
 #endif

@@ -4,9 +4,7 @@
 #include <math.h>
 #include <MLV/MLV_all.h>
 
-void process_init(Plateau* p, Carre* c){
-    c->col = 0;
-    c->lig = 0;
+void init(Plateau* p){
     int i, j;
     for(i = 0; i < NB_LIG; i++) {
         for(j = 0; j < NB_COL; j++) {
@@ -16,55 +14,68 @@ void process_init(Plateau* p, Carre* c){
     }
 }
 
-void process_move_particle(Plateau* p, Carre* black, MLV_Keyboard_button key) {
-    //Carre tmp = p->bloc[black->lig][black->col];
-    int tmp_x, tmp_y;
-    switch(key) {
-        case MLV_KEYBOARD_UP :
-            if(black->lig > 0) {
-                //tmp_x = quelque chose 1
-                //tmp_y = quelque chose 1
-                //quelque chose 1 = quelque chose 2
-                //quelque chose 1 = quelque chose 2
-                //quelque chose 2 = tmp_x
-                //quelque chose 2 = tmp_x
+void swap(Carre* a, Carre* b) {
+    int tempLig = a->lig;
+    int tempCol = a->col;
 
-                p->bloc[black->lig][black->col].lig = p->bloc[black->lig][black->col-1].lig;
-                p->bloc[black->lig][black->col].col = p->bloc[black->lig][black->col-1].col;
-                p->bloc[black->lig][black->col-1].lig = tmp.lig;
-                p->bloc[black->lig][black->col-1].col = tmp.col;
-                black->col--;
-                return;
-            }
-        case MLV_KEYBOARD_DOWN :
-            if(black->lig < NB_LIG - 1) {
-                p->bloc[black->lig][black->col].lig = p->bloc[black->lig][black->col+1].lig;
-                p->bloc[black->lig][black->col].col = p->bloc[black->lig][black->col+1].col;
-                p->bloc[black->lig][black->col+1].lig = tmp.lig;
-                p->bloc[black->lig][black->col+1].col = tmp.col;
+    a->lig = b->lig;
+    a->col = b->col;
+
+    b->lig = tempLig;
+    b->col = tempCol;
+}
+
+bool est_valide(Carre cible, MLV_Keyboard_button key) {
+    if(cible.col - 1 < 0 && key == MLV_KEYBOARD_UP) {
+        return false;
+    }
+    if(cible.col == NB_COL - 1 && key == MLV_KEYBOARD_DOWN) {
+        return false;
+    }
+    if(cible.lig == 0 && key == MLV_KEYBOARD_LEFT) {
+        return false;
+    }
+    if(cible.lig == NB_LIG - 1 && key == MLV_KEYBOARD_RIGHT) {
+        return false;
+    }
+    return true;
+}
+
+void play(Plateau* p, MLV_Keyboard_button key, Carre* black) {
+    Carre tmp = *black;
+    switch (key)
+    {
+        case MLV_KEYBOARD_UP:
+            if(est_valide(*black, MLV_KEYBOARD_UP)) {
+                swap(&(p->bloc[tmp.lig][tmp.col]), &(p->bloc[tmp.lig][tmp.col-1]));
+                //fprintf(stderr, "%d -- %d\n", black->col, black->lig);
+                black->col -= 1;
+            }    
+            break;
+
+        case MLV_KEYBOARD_DOWN:
+            if(est_valide(*black, MLV_KEYBOARD_DOWN)) {
+                swap(&(p->bloc[tmp.lig][tmp.col]), &(p->bloc[tmp.lig][tmp.col+1]));
+                //fprintf(stderr, "%d -- %d\n", black->col, black->lig);
                 black->col += 1;
-                return;
             }    
-        case MLV_KEYBOARD_LEFT :
-            if(black->col > 0) {
-                p->bloc[black->lig][black->col].lig = p->bloc[black->lig-1][black->col].lig;
-                p->bloc[black->lig][black->col].col = p->bloc[black->lig-1][black->col].col;
-                p->bloc[black->lig-1][black->col].lig = tmp.lig;
-                p->bloc[black->lig-1][black->col].col = tmp.col;
+            break;
+
+        case MLV_KEYBOARD_LEFT:
+            if(est_valide(*black, MLV_KEYBOARD_LEFT)) {
+                swap(&(p->bloc[tmp.lig][tmp.col]), &(p->bloc[tmp.lig-1][tmp.col]));
+                //fprintf(stderr, "%d -- %d\n", black->col, black->lig);
                 black->lig -= 1;
-                return;
             }    
-        case MLV_KEYBOARD_RIGHT :
-            if(black->col < NB_COL - 1) {
-                p->bloc[black->lig][black->col].lig = p->bloc[black->lig+1][black->col].lig;
-                fprintf(stderr, "%d, %d \n", black->col, black->lig);
-                p->bloc[black->lig][black->col].col = p->bloc[black->lig+1][black->col].col;
-                p->bloc[black->lig+1][black->col].lig = tmp.lig;
-                p->bloc[black->lig+1][black->col].col = tmp.col;
+            break;
+
+        case MLV_KEYBOARD_RIGHT:
+            if(est_valide(*black, MLV_KEYBOARD_RIGHT)) {
+                swap(&(p->bloc[tmp.lig][tmp.col]), &(p->bloc[tmp.lig+1][tmp.col]));
+                //fprintf(stderr, "%d -- %d\n", black->col, black->lig);
                 black->lig += 1;
-                return;       
             }    
-        default:
-            return;      
+            break;        
+
     }
 }
