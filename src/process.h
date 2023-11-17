@@ -3,26 +3,28 @@
 
 #include <MLV/MLV_all.h>
 #include <stdbool.h>
+#include <time.h>
 
-#define NB_LIG 4
-#define NB_COL 4
-
-typedef struct carre {
-    int lig;
-    int col;
-} Carre;
+#define SIZE 4
 
 typedef struct {
-    Carre bloc[NB_COL][NB_LIG];
-} Plateau;
+    int x;
+    int y;
+} Unit;
 
+typedef struct {
+    Unit list[SIZE][SIZE];
+} Tray;
 
-void init(Plateau* p);
+void init_tray(Tray* tray);
 
-void swap(Carre* a, Carre* b);
+void swap_units(Unit* first, Unit* second);
 
-void play(Plateau* p, MLV_Keyboard_button key, Carre* black);
+bool is_valid_move(int black_x, int black_y, int x, int y);
 
-bool est_valide(Carre cible, MLV_Keyboard_button key);
+void move_units(Tray* tray, MLV_Keyboard_button key, Unit* black);
 
+void print_tray(Tray tray);
+
+void shuffle_tray(Tray *tray, int num_moves, Unit *black);
 #endif

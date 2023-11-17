@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =-std=c17 -pedantic -Wall -fPIE
+CFLAGS =-std=c17 -pedantic -Wall -fPIE -g -O0
 LDFLAGS = -lm -lMLV
 OBJ_DIR= obj/
 OBJ = ${OBJ_DIR}graphic.o ${OBJ_DIR}process.o
@@ -24,6 +24,7 @@ ${OBJ_DIR}%.o: $(REG)%.c
 
 clean:
 	rm -f obj/*
+	rm -f $(EXE)
 
 mrproper: clean
 	rm -f $(EXE)
