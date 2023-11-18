@@ -4,6 +4,15 @@
 #include <math.h>
 #include <MLV/MLV_all.h>
 
+void create_game(Tray* tray, Unit* black) {
+    black->x = SIZE - 1;
+    black->y = SIZE - 1;
+    if(!tray) {
+        fprintf(stderr, "Tray allocation failed\n");
+        exit(0);
+    }
+}
+
 void init_tray(Tray* tray){
     int i, j;
     for(i = 0; i < SIZE; i++) {
@@ -86,4 +95,16 @@ void shuffle_tray(Tray *tray, int num_moves, Unit *black) {
         key = array[rand() % 4];
         move_units(tray, key, black);
     } 
+}
+
+bool victory(Tray tray, Unit black) {
+    int i, j;
+    for(i = 0; i < SIZE; i++) {
+        for(j = 0; j < SIZE; j++) {
+            if((((tray.list)[i][j]).x != i) || (((tray.list)[i][j]).y != j)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

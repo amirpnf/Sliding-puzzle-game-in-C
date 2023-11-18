@@ -27,4 +27,8 @@ void move_units(Tray* tray, MLV_Keyboard_button key, Unit* black);
 void print_tray(Tray tray);
 
 void shuffle_tray(Tray *tray, int num_moves, Unit *black);
+
+bool victory(Tray tray, Unit black);
+
+void create_game(Tray* tray, Unit* black);
 #endif

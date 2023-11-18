@@ -8,25 +8,27 @@
 int main(int argc, char* argv[]) {
     Tray* tray = (Tray*)malloc(sizeof(Tray));
     Unit black;
-    black.x = SIZE - 1;
-    black.y = SIZE - 1;
-    if(!tray) {
-        fprintf(stderr, "Tray allocation failed\n");
-        return 1;
-    }
+    create_game(tray, &black);
     init_tray(tray);
     MLV_create_window("", "", 512, 512);
     MLV_Keyboard_button key;
-    MLV_Image* image = MLV_load_image("image.png");
-    shuffle_tray(tray, 20, &black);
+    MLV_Image* image = MLV_load_image("image.jpg");
+    shuffle_tray(tray, 200, &black);
     refresh_screen(image, tray, black);
     do {
-        //print_tray(*tray);
-        printf("%d -- %d \n", tray->list[black.y][black.x].x, tray->list[black.y][black.x].y);
         MLV_wait_keyboard(&key, NULL, NULL);
+        if(key == MLV_KEYBOARD_SPACE) {
+            exit(0);
+        }
         move_units(tray, key, &black);
+        if(victory(*tray, black)) {
+            MLV_draw_text_on_image(200, 200, "YOU WIN !", MLV_COLOR_ALICE_BLUE, image);
+            refresh_screen(image, tray, black);
+            printf("HEYYYY!");
+            break;
+        }
         refresh_screen(image, tray, black);
-    } while (key != MLV_KEYBOARD_q);
+    } while (key != MLV_KEYBOARD_SPACE);
     MLV_wait_seconds(10);
     MLV_free_window();
     free(tray);

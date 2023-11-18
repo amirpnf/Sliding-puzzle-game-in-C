@@ -26,6 +26,7 @@
 }*/
 
 void refresh_screen(MLV_Image* image, Tray* tray, Unit black) {
+    int scale = 512 / SIZE;
     MLV_clear_window(MLV_COLOR_BLACK);
     for(int i = 0; i < SIZE; ++i) {
         for(int j = 0; j < SIZE; ++j) {
@@ -34,7 +35,7 @@ void refresh_screen(MLV_Image* image, Tray* tray, Unit black) {
                 continue;
             }
             
-            MLV_draw_partial_image(image, tray->list[i][j].x * 128, tray->list[i][j].y * 128, 128, 128, i*128, j*128);
+            MLV_draw_partial_image(image, tray->list[i][j].x * scale, tray->list[i][j].y * scale, scale, scale, i*scale + 4*i, j*scale + 4*j);
         }
     }
     MLV_actualise_window();
